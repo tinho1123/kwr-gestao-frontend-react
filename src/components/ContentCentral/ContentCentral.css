@@ -1,0 +1,8 @@
+.contentCentral {
+    background-color: #fff;
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}

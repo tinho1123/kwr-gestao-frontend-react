@@ -1,0 +1,13 @@
+.card {
+    background-color: #fff;
+    height: 100vh;
+}
+
+.container-data {
+    background-color: white;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 10px;
+    border: 1px solid black;
+}
