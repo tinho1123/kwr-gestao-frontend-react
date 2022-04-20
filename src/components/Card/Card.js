@@ -6,7 +6,7 @@ export default function Card(props) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(async () => {
-    await getFinanceiro();
+    await getFinanceiro()
   }, [])
 
   async function getFinanceiro() {
