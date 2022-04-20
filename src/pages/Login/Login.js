@@ -12,9 +12,14 @@ export default function Login() {
 
   const handleClick = () => {
     if( email.includes('@') && email.includes('.com') && senha.length > 6) {
-      Axios.post('http://localhost:5000/login', {
-        email,
-        senha
+      fetch(`${process.env.REACT_APP_URL_API}/login`, 
+      {
+        method: 'POST',
+        body: {
+          email, senha
+        },
+        mode: 'cors',
+        cache: 'default'
       })
       .then(() => navigate('/gestao-de-pedidos'))
       .catch((err) => console.log(err))
