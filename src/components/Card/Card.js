@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import './Card.css';
-import axios from 'axios';
 import Loading from '../Loading/Loading';
 
 export default function Card(props) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(async () => {
-    await getFinanceiro();
+    await getFinanceiro()
   }, [])
 
   async function getFinanceiro() {
