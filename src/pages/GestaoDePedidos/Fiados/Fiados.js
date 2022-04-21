@@ -4,30 +4,49 @@ import './Fiados.css'
 import Sidebar from '../../../components/Sidebar/Sidebar'
 import Loading from '../../../components/Loading/Loading';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Fiados() {
   const navigate = useNavigate()
 
   const [data, setData] = useState([]);
+  const [filter, setFilter] = useState([]);
 const [loading, setLoading] = useState(true);
 
 useEffect(async () => {
   await GetFinanceiro();
 }, [])
 
+function filterProducts(value) {
+  setTimeout(() => {
+    const dado = data.filter((dado) => dado.name.toLowerCase().includes(value))
+    setFilter(dado);
+  }, 100);
+}
+
 async function GetFinanceiro() {
-  const response = await fetch(`${process.env.REACT_APP_URL_API}/fiados/getall`)
-  const data = await response.json()
-  setData(data)
-  setLoading(false)
+  await axios.get(`${process.env.REACT_APP_URL_API}/fiados/getall`)
+    .then(({data}) => {
+      setData(data)
+      setFilter(data)
+      setLoading(false)
+    })
   }
+  console.log(data);
 
   return (
     <div className='container-fiados'>
       <Sidebar />
     <div className='fiados'>
-      <h2>Fiados</h2>
-    {loading ? <Loading /> : data.map((data) => {
+        <h2>Fiados</h2>
+        <input
+          type='text'
+          className='btn-filter'
+          onChange={({ target: { value } }) => filterProducts(value) }
+          placeholder="Digite o nome do Fiador" 
+        />
+        <button className='btn-new-fiador' onClick={ () => navigate('createfiador')}>Criar novo fiador</button>
+    {loading ? <Loading /> : filter.map((data) => {
       if (data.length === 0) {
         return (
           <div>
@@ -36,10 +55,10 @@ async function GetFinanceiro() {
         )
       }
       return (
-      <button onClick={ () => navigate(data._id) }>
+      <button className='btn-fiados-user' onClick={ () => navigate(data._id) }>
         <div key={data._id} className="container-data" >
         <h3>nome: {data.name}</h3>
-        <h3>Valor Total: R${data.valorTotal.reduce((prev, curr) => prev + curr.total, 0 )} </h3>
+        <h3>Valor Total: R${data.valorTotal.reduce((prev, curr) => Number(prev) + Number(curr.total), 0 )} </h3>
         </div>
       </button>
       )
