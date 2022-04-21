@@ -1,0 +1,20 @@
+.fiados {
+    background-color: #fff;
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+.container-fiados {
+display: flex
+}
+
+.container-data {
+background-color: white;
+display: flex;
+flex-wrap: wrap;
+justify-content: space-around;
+padding: 10px;
+border: 1px solid black;
+}

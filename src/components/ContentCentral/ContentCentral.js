@@ -15,20 +15,14 @@ export default function ContentCentral() {
         </div>
       )
 
-    case '/gestao-de-pedidos/configuracoes':
-      return (
-        <div className='contentCentral'>
-          <h2>Configuracoes</h2>
-          <Card configurações={true} />
+    case '/gestao-de-pedidos':
+      return(
+      <div className='contentCentral'>
+          <h2>Financeiro</h2>
+          <Card/>
         </div>
       )
     default:
-      return (
-        <div className='contentCentral'>
-          <h2>Financeiro</h2>
-          <Card financeiro={true}/>
-        </div>
-      )
   }
  
 }

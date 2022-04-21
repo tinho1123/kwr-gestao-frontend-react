@@ -1,0 +1,16 @@
+.user {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.product {
+    display: flex;
+    background-color: cadetblue;
+    text-align: center;
+}
+
+.product h3 {
+    margin-left: 20px;
+    margin-right: 95px;
+}
