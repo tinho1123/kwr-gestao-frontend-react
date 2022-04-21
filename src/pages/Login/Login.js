@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios';
 
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
@@ -6,26 +7,24 @@ import { useNavigate } from 'react-router-dom';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [error, setError] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if( email.includes('@') && email.includes('.com') && senha.length > 6) {
-      fetch(`${process.env.REACT_APP_URL_API}/login`, 
-      {
-        method: 'POST',
-        body: {
+      await axios.post(`${process.env.REACT_APP_URL_API}/login`, {
           email, senha
-        },
-        mode: 'cors',
-        cache: 'default'
       })
-      .then(() => navigate('/gestao-de-pedidos'))
-      .catch((err) => console.log(err))
-    } else {
-
+      .then((data) => navigate('gestao-de-pedidos'))
+      .catch((err) => {
+        setError(true)
+        setTimeout(() => {
+          setError(false);
+        }, 5000 )
+      })
     }
-  }
+}
 
   return (
     <div className='background'>
@@ -33,6 +32,9 @@ export default function Login() {
           <h2 className='titulo-menu'>KWR Gestão de pedidos</h2>
           <div className='form'>
             <div className='email'>
+            {error && (
+              <div className='error'>Email ou senha incorreta</div>
+            )}
               <h2 className='text_input_email'>Digite seu email:</h2>
               <input
                 id='input_email'
@@ -66,4 +68,4 @@ export default function Login() {
 
     </div>
   )
-}
+  }

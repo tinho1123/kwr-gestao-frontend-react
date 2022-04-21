@@ -12,6 +12,7 @@
     width: 40vw;
     height: 80vh;
     border-radius: 3%;
+    overflow: auto;
 }
 
 .titulo-menu {
@@ -53,6 +54,10 @@
     margin-top: 50px;
     width: 30%;
     height: 50px;
+}
+
+.error {
+    color: red;
 }
 
 @media screen and (max-width: 500px) {

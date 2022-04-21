@@ -7,10 +7,17 @@
 .product {
     display: flex;
     background-color: cadetblue;
-    text-align: center;
+    justify-content: space-around;
 }
 
 .product h3 {
     margin-left: 20px;
     margin-right: 95px;
+}
+
+.data-product {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 30px;
+    margin-right: 30px;
 }

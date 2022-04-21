@@ -14,7 +14,7 @@ export default function FiadoUser() {
     })
 
     async function GetDataUser() {
-        const result = await fetch('http://localhost:5000/api/fiados/62605d291934107dd6c99b61');
+        const result = await fetch(`${process.env.REACT_APP_URL_API}/fiados/${id}`);
         const data = await result.json();
         useData(data);
         useLoading(false);
@@ -27,12 +27,17 @@ export default function FiadoUser() {
                 <h2 className='nome'>{data.name}</h2>
                 <h1>Pedidos feitos</h1>
                 {data.valorTotal.map((product) => (
-                    <div className='product'>
-                        <h3>Quantidade: {product.quantidade}</h3>
-                        <h3>Produto: {product.produto}</h3>
-                        <h3>Valor: {product.valor}</h3>
-                        <h3>Total: {product.total}</h3>
-                        <h3>Data: {product.data}</h3>
+                    <div>
+                        <div className='data-product'>
+                            <h2>Data:</h2>
+                            <h2>{product.data}</h2>
+                        </div>
+                        <div className='product'>
+                        <h3>Quantidade: <br />{product.quantidade}</h3>
+                        <h3>Produto: <br /> {product.produto}</h3>
+                        <h3>Valor: <br /> {product.valor}</h3>
+                        <h3>Total: <br /> {product.total}</h3>
+                        </div>
                     </div>
                 ))}
             </div> 

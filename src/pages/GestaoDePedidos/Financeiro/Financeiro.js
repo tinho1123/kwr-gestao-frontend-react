@@ -14,7 +14,7 @@ useEffect(async () => {
 }, [])
 
 async function GetFinanceiro() {
-  const response = await fetch(`${process.env.REACT_APP_URL_API}/api/financial/getall`)
+  const response = await fetch(`${process.env.REACT_APP_URL_API}/financial/getall`)
   const data = await response.json()
   setData(data)
   setLoading(false)
