@@ -6,8 +6,23 @@
     display: flex;
     flex-direction: column;
 }
+
+
 .container-fiados {
 display: flex
+}
+
+.fiados h2 {
+    width: 100px;
+    align-self: center;
+}
+
+.btn-filter {
+ width: 200px;
+ align-self: flex-end;
+ margin-right: 50px;
+ position: absolute;
+ top: 25px;
 }
 
 .container-data {
@@ -17,4 +32,16 @@ flex-wrap: wrap;
 justify-content: space-around;
 padding: 10px;
 border: 1px solid black;
+}
+
+.btn-fiados-user {
+    cursor: pointer;
+}
+
+.btn-new-fiador {
+ width: 200px;
+ align-self: flex-end;
+ margin-right: 50px;
+ padding: 10px;
+ margin-bottom: 20px;
 }
