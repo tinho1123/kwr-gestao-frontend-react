@@ -18,9 +18,13 @@ export default function Login() {
       await axios.post(`${process.env.REACT_APP_URL_API}/login`, {
           email, senha
       })
-      .then((data) => navigate('gestao-de-pedidos'))
+      .then((data) => {
+        setLoading(false);
+        navigate('gestao-de-pedidos')
+      })
       .catch((err) => {
         setError(true)
+        setLoading(false)
         setTimeout(() => {
           setError(false);
         }, 5000 )
