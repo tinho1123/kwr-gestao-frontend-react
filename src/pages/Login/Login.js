@@ -7,11 +7,13 @@ import { useNavigate } from 'react-router-dom';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const navigate = useNavigate();
 
   const handleClick = async () => {
+    setLoading(true);
     if( email.includes('@') && email.includes('.com') && senha.length > 6) {
       await axios.post(`${process.env.REACT_APP_URL_API}/login`, {
           email, senha
@@ -61,7 +63,7 @@ export default function Login() {
               type='button'
               onClick={handleClick}
             >
-              Logar
+              {loading ? 'Carregando...' : 'Logar'}
             </button>
           </div>
       </div>
