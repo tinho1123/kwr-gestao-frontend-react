@@ -23,8 +23,8 @@ export default function Login() {
         navigate('gestao-de-pedidos')
       })
       .catch((err) => {
-        setError(true)
         setLoading(false)
+        setError(true)
         setTimeout(() => {
           setError(false);
         }, 5000 )
