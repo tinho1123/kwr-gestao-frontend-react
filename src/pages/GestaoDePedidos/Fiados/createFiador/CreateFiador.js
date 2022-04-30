@@ -1,25 +1,29 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import './CreateFiador.css';
 
 export default function CreateFiador() {
 
   const navigate = useNavigate();
-
+  const [dataProdutos, setDataProdutos] = useState([]);
   const [name, setName] = useState('')
   const [produto, setProduto] = useState('')
   const [valor, setValor] = useState(0);
   const [quantidade, setQuantidade] = useState(1);
   const [loading, setLoading] = useState(false)
 
-  const produtos = [
-    { name: '', value: '' },
-    { name: 'Brahma Litro', value: 8.5 },
-    { name: 'Antarctica Litro', value: 8.5 },
-    { name: 'Brahma Latão', value: 5 },
-    { name: 'Antarctica Latão', value: 5 }
-  ]
+
+  useEffect(()=> {
+    dataProdutosFetch()
+  }, [])
+
+  const dataProdutosFetch = async () => {
+    await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/produtos/getall`)
+    .then(( { data: { result } }) => {
+      setDataProdutos(result)
+    }).catch((err) => console.log(err));
+  }
 
   const createFiador = async () => {
     await axios.post(`${process.env.REACT_APP_PRODUCTION_URL_API}/fiados/createfiador`, {
@@ -42,9 +46,13 @@ export default function CreateFiador() {
       <div>
         <h1>Produtos</h1>
         <h3>produto: 
-          <select onChange={({target}) => setProduto(target.value)}>
-            {produtos.map((produto, index) => 
-            <option value={produto.name} key={index} >{produto.name}</option>
+          <select onChange={({target}) => {
+            const find = dataProdutos.find((find) => find.produto.includes(target.value))
+            setProduto(find.produto)
+            setValor(find.valor)
+            }}>
+            {dataProdutos.map((produto, index) => 
+            <option value={produto.produto} key={index} >{produto.produto}</option>
             )}
           </select>
         </h3>
