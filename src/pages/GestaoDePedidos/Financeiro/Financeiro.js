@@ -22,7 +22,6 @@ useEffect(async () => {
 }, [loading])
 
 async function GetFinanceiro() {
-  if (loading) {
   await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/vendas/getall`)
     .then(({ data: { result } }) => {
       setData(result)
@@ -32,7 +31,6 @@ async function GetFinanceiro() {
       setDataProdutos(result)
       setLoading(false);
     }).catch((err) => console.log(err))
-  }
   }
 
   const forma_pagamento = [
@@ -93,15 +91,25 @@ async function GetFinanceiro() {
               Cadastrar venda
           </button>
           </div>
-    {loading ? <Loading /> : data.map((data) => {
-      if (data.length === 0) (<h2>Nenhum dado encontrado</h2>)
+    {loading ? <Loading /> : data.map((dado, index) => {
+      if (dado.length === 0) (<h2>Nenhum dado encontrado</h2>)
       return (
-      <div key={data._id} className="container-data" >
-      <h3>Produto: {data.produto}</h3>
-      <h3>Quantidade: {data.quantidade}</h3>
-      <h3>Total: R${data.valor}</h3>
-      <h3>Pagamento: {data.metodo_pagamento}</h3>
-      <h3>Data: {data.data}</h3>
+      <div key={dado._id} className="container-data" >
+      <h3>Produto: {dado.produto}</h3>
+      <h3>Quantidade: {dado.quantidade}</h3>
+      <h3>Total: R${dado.valor}</h3>
+      <h3>Pagamento: {dado.metodo_pagamento}</h3>
+      <h3>Data: {dado.data}</h3>
+      <button onClick={
+        async () => {
+          setLoading(true) 
+          const { _id: id } = data.find((_, i) => i === index );
+          await axios.delete(`${process.env.REACT_APP_PRODUCTION_URL_API}/vendas/deletevenda/${id}`)
+          .then((data) => console.log(data))
+          .catch((err) => console.log(err))
+          setLoading(false)
+        }
+        }>Apagar venda</button>
       </div>
       )
 })}
