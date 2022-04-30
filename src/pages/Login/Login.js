@@ -15,7 +15,7 @@ export default function Login() {
   const handleClick = async () => {
     setLoading(true);
     if( email.includes('@') && email.includes('.com') && senha.length > 6) {
-      await axios.post(`${process.env.REACT_APP_URL_API}/login`, {
+      await axios.post(`${process.env.REACT_APP_PRODUCTION_URL_API}/login`, {
           email, senha
       })
       .then((data) => {
