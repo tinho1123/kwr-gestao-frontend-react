@@ -27,3 +27,9 @@
 .cadastro-produto > button {
     margin-bottom: 20px
 }
+
+@media screen and (max-width: 600px){
+    .cadastro-produto {
+        flex-wrap: wrap;
+    }
+}

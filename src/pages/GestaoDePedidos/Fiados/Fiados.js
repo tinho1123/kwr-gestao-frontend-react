@@ -11,11 +11,12 @@ export default function Fiados() {
 
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState([]);
-const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false)
 
 useEffect(async () => {
   await GetFinanceiro();
-}, [])
+}, [loading])
 
 function filterProducts(value) {
   setTimeout(() => {
@@ -25,14 +26,13 @@ function filterProducts(value) {
 }
 
 async function GetFinanceiro() {
-  await axios.get(`${process.env.REACT_APP_URL_API}/fiados/getall`)
-    .then(({data}) => {
-      setData(data)
-      setFilter(data)
+  await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/fiados/getall`)
+    .then(({ data: { result } }) => {
+      setData(result)
+      setFilter(result)
       setLoading(false)
-    })
+    }).catch((err) => setError(err))
   }
-  console.log(data);
 
   return (
     <div className='container-fiados'>
@@ -47,12 +47,12 @@ async function GetFinanceiro() {
         />
         <button className='btn-new-fiador' onClick={ () => navigate('createfiador')}>Criar novo fiador</button>
     {loading ? <Loading /> : filter.map((data) => {
-      if (data.length === 0) {
-        return (
+      if (data.length < 1 ) {
+          return (
           <div>
             <h2>Nenhum dado encontrado</h2>
           </div>
-        )
+          )
       }
       return (
       <button className='btn-fiados-user' onClick={ () => navigate(data._id) }>

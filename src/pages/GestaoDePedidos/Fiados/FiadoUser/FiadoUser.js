@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import './FiadoUser.css';
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Loading from '../../../../components/Loading/Loading';
+import axios from 'axios';
 
 export default function FiadoUser() {
     const { id } = useParams();
+    const navigate = useNavigate();
 
-    const [data, useData] = useState([]);
-    const [loading, useLoading] = useState(true);
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
     
     useEffect(() => {
         GetDataUser()
-    })
+    }, [loading])
 
     async function GetDataUser() {
-        const result = await fetch(`${process.env.REACT_APP_URL_API}/fiados/${id}`);
-        const data = await result.json();
-        useData(data);
-        useLoading(false);
-    }
+        if (loading){
+        await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/fiados/${id}`)
+        .then(({ data: { result } }) => {
+            setData(result);
+            setLoading(false);
+        }).catch((err) => console.log(err))
+    }}
 
   return (
     <div>
@@ -26,6 +30,13 @@ export default function FiadoUser() {
             <div className='user'>
                 <h2 className='nome'>{data.name}</h2>
                 <h1>Pedidos feitos</h1>
+                <button 
+                    onClick={
+                    () => axios.delete(`${process.env.REACT_APP_PRODUCTION_URL_API}/fiados/deletefiador/${id}`)
+                        .then(() => navigate('/gestao-de-pedidos/fiados'))}
+                >
+                    Apagar Fiador
+                </button>
                 {data.valorTotal.map((product) => (
                     <div>
                         <div className='data-product'>

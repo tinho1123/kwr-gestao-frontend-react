@@ -1,8 +1,12 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom';
 import './CreateFiador.css';
 
 export default function CreateFiador() {
+
+  const navigate = useNavigate();
+
   const [name, setName] = useState('')
   const [produto, setProduto] = useState('')
   const [valor, setValor] = useState(0);
@@ -18,7 +22,7 @@ export default function CreateFiador() {
   ]
 
   const createFiador = async () => {
-    await axios.post(`${process.env.REACT_APP_URL_API}/fiados/createfiador`, {
+    await axios.post(`${process.env.REACT_APP_PRODUCTION_URL_API}/fiados/createfiador`, {
       name,
       valorTotal: [
         {
@@ -29,7 +33,7 @@ export default function CreateFiador() {
           total: valor * quantidade
         }
       ]
-    }).then(() => setLoading(false))
+    }).then(() => setLoading(false), navigate('/gestao-de-pedidos/fiados'))
   }
 
   return (
