@@ -22,7 +22,7 @@ export default function CreateFiador() {
     await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/produtos/getall`)
     .then(( { data: { result } }) => {
       setDataProdutos(result)
-    }).catch((err) => console.log(err))
+    }).catch((err) => console.log(err));
   }
 
   const createFiador = async () => {
