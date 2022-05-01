@@ -36,7 +36,10 @@ async function GetFinanceiro() {
     }
   })
     .then(( { data: { result } }) => {
-      setDataProdutos(result)
+      const data = result
+      data.unshift({ produto: '', valor: 0 })
+      setDataProdutos(data)
+
       setLoading(false);
     }).catch((err) => console.log(err))
   }
