@@ -36,6 +36,8 @@ border: 1px solid black;
 
 .btn-fiados-user {
     cursor: pointer;
+    border-color: none;
+    
 }
 
 .btn-new-fiador {
