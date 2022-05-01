@@ -5,6 +5,7 @@ import axios from 'axios';
 
 
 export default function Financeiro() {
+  const token = localStorage.getItem('token')
 
   const [data, setData] = useState([]);
   const [dataProdutos, setDataProdutos] = useState([]);
@@ -21,11 +22,19 @@ useEffect( () => {
 }, [loading])
 
 async function GetFinanceiro() {
-  await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/vendas/getall`)
+  await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/vendas/getall`, {
+    headers: {
+      token
+    }
+  })
     .then(({ data: { result } }) => {
       setData(result)
     }).catch((err) => console.log(err))
-  await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/produtos/getall`)
+  await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/produtos/getall`, {
+    headers: {
+      token
+    }
+  })
     .then(( { data: { result } }) => {
       setDataProdutos(result)
       setLoading(false);
@@ -100,7 +109,12 @@ async function GetFinanceiro() {
                 data: new Date().toLocaleDateString('pt-br', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute:'2-digit', second:'2-digit'}),
                 metodo_pagamento: pagamento.name,
                 total
-              }).then(() => {
+              }, 
+              { 
+                headers: {
+                  token
+              }
+             }).then(() => {
                 setLoading(false)
               })
 
@@ -124,7 +138,7 @@ async function GetFinanceiro() {
           setLoading(true)
           setData([])
           const { _id: id } = data.find((_, i) => i === index );
-          await axios.delete(`${process.env.REACT_APP_PRODUCTION_URL_API}/vendas/deletevenda/${id}`)
+          await axios.delete(`${process.env.REACT_APP_PRODUCTION_URL_API}/vendas/deletevenda/${id}`, { headers: { token } })
           .then((data) => console.log(data))
           .catch((err) => console.log(err))
           setLoading(false)

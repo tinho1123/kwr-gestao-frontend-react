@@ -7,6 +7,7 @@ import axios from 'axios';
 
 export default function Fiados() {
   const navigate = useNavigate()
+  const token = localStorage.getItem('token');
 
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState([]);
@@ -25,7 +26,7 @@ function filterProducts(value) {
 }
 
 async function GetFinanceiro() {
-  await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/fiados/getall`)
+  await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/fiados/getall`, { headers: { token }})
     .then(({ data: { result } }) => {
       setData(result)
       setFilter(result)

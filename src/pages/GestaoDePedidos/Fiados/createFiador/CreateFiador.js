@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import './CreateFiador.css';
 
 export default function CreateFiador() {
+  const token = localStorage.getItem('token');
 
   const navigate = useNavigate();
   const [dataProdutos, setDataProdutos] = useState([]);
@@ -16,10 +17,10 @@ export default function CreateFiador() {
 
   useEffect(()=> {
     dataProdutosFetch()
-  }, [])
+  })
 
   const dataProdutosFetch = async () => {
-    await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/produtos/getall`)
+    await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/produtos/getall`, { headers: { token }})
     .then(( { data: { result } }) => {
       setDataProdutos(result)
     }).catch((err) => console.log(err));
@@ -37,7 +38,7 @@ export default function CreateFiador() {
           total: valor * quantidade
         }
       ]
-    }).then(() => setLoading(false), navigate('/gestao-de-pedidos/fiados'))
+    }, { headers: { token } }).then(() => setLoading(false), navigate('/gestao-de-pedidos/fiados'))
   }
 
   return (
