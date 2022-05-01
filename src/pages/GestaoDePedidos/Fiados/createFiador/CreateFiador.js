@@ -23,7 +23,7 @@ export default function CreateFiador() {
     await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/produtos/getall`, { headers: { token }})
     .then(( { data: { result } }) => {
       const data = result
-      data.unshift({ produto: '', valor: 0 })
+      data.unshift({ produto: '', valor: 0 });
       setDataProdutos(data)
     }).catch((err) => console.log(err));
   }
