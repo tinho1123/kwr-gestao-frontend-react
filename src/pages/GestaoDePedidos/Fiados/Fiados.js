@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './Fiados.css'
 
-import Sidebar from '../../../components/Sidebar/Sidebar'
 import Loading from '../../../components/Loading/Loading';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -14,8 +13,8 @@ export default function Fiados() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false)
 
-useEffect(async () => {
-  await GetFinanceiro();
+useEffect( () => {
+   GetFinanceiro();
 }, [loading])
 
 function filterProducts(value) {
@@ -36,9 +35,10 @@ async function GetFinanceiro() {
 
   return (
     <div className='container-fiados'>
-      <Sidebar />
     <div className='fiados'>
         <h2>Fiados</h2>
+
+        <div>
         <input
           type='text'
           className='btn-filter'
@@ -46,6 +46,7 @@ async function GetFinanceiro() {
           placeholder="Digite o nome do Fiador" 
         />
         <button className='btn-new-fiador' onClick={ () => navigate('createfiador')}>Criar novo fiador</button>
+        </div>
     {loading ? <Loading /> : filter.map((data) => {
       if (data.length < 1 ) {
           return (

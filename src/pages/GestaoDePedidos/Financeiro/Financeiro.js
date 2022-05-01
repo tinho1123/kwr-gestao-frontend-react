@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './Financeiro.css';
 import Loading from '../../../components/Loading/Loading';
-import Sidebar from '../../../components/Sidebar/Sidebar';
 import axios from 'axios';
 
 
@@ -17,8 +16,8 @@ export default function Financeiro() {
   const [quantidade, setQuantidade] = useState(1);
   const [pagamento, setPagamento] = useState({});
 
-useEffect(async () => {
-  await GetFinanceiro();
+useEffect( () => {
+   GetFinanceiro();
 }, [loading])
 
 async function GetFinanceiro() {
@@ -42,7 +41,6 @@ async function GetFinanceiro() {
 
   return (
     <div className='container-financeiro' >
-      <Sidebar />
     <div className='financeiro'>
       <h2>Financeiro</h2>
       <div className='cadastro-produto'>
@@ -80,6 +78,7 @@ async function GetFinanceiro() {
               produto,
               valor,
               quantidade,
+              data: new Date().toLocaleDateString('pt-br', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute:'2-digit', second:'2-digit'}),
               metodo_pagamento: pagamento.name,
               total
             }).then(() => {
