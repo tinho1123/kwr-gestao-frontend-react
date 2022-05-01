@@ -24,12 +24,23 @@
     justify-content: space-around;
 }
 
-.cadastro-produto > button {
-    margin-bottom: 20px
+.cadastro_produto_btn {
+    width: 100px;
+    height: 100px;
+}
+
+.cadastro_produto_btn button {
+    height: 50px;
+    margin-top: 20px;
+
 }
 
 @media screen and (max-width: 600px){
     .cadastro-produto {
-        flex-wrap: wrap;
+        flex-direction: column;
+
+    }
+    .cadastro_produto_btn {
+        align-self: center;
     }
 }

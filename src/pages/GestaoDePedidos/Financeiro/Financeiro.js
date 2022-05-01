@@ -5,6 +5,7 @@ import axios from 'axios';
 
 
 export default function Financeiro() {
+  const token = localStorage.getItem('token')
 
   const [data, setData] = useState([]);
   const [dataProdutos, setDataProdutos] = useState([]);
@@ -21,11 +22,19 @@ useEffect( () => {
 }, [loading])
 
 async function GetFinanceiro() {
-  await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/vendas/getall`)
+  await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/vendas/getall`, {
+    headers: {
+      token
+    }
+  })
     .then(({ data: { result } }) => {
       setData(result)
     }).catch((err) => console.log(err))
-  await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/produtos/getall`)
+  await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/produtos/getall`, {
+    headers: {
+      token
+    }
+  })
     .then(( { data: { result } }) => {
       setDataProdutos(result)
       setLoading(false);
@@ -44,8 +53,9 @@ async function GetFinanceiro() {
     <div className='financeiro'>
       <h2>Financeiro</h2>
       <div className='cadastro-produto'>
-        <h3>produto: 
-          <br />
+        <div className='cadastro_produto_produto'>
+        <h3>Produto:
+          <br/> 
           <select onChange={ ({ target }) => {
             const produto = dataProdutos.find((produto) => produto.produto.includes(target.value))
             setProduto(produto.produto)
@@ -57,38 +67,62 @@ async function GetFinanceiro() {
               )}
           </select>
           </h3>
-          <h3>Valor: <input type='number' onChange={({target}) => setValor(target.value)} value={valor}/></h3>
-          <h3>Quantidade: <input type='number' onChange={({target}) => setQuantidade(target.value)} value={quantidade}/></h3>
-          <h3>Pagamento: 
-          <select onChange={({target}) => {
-            const pagamento = forma_pagamento.find((pagamen) => pagamen.name.includes(target.value))
-            setPagamento(pagamento)
-          }}
-          >
-            {forma_pagamento.map((pagamento, index) => 
-            <option value={pagamento.name} key={index} >{pagamento.name}</option>
-              )}
-          </select>
-          </h3>
-          <h3>Valor total: R${ (valor * quantidade / pagamento.porcentagem).toFixed(2) } </h3>
-          <button onClick={ async () => {
-            setLoading(true) 
-            const total = (valor * quantidade / pagamento.porcentagem).toFixed(2)
-            await axios.post(`${process.env.REACT_APP_PRODUCTION_URL_API}/vendas/createvenda`, {
-              produto,
-              valor,
-              quantidade,
-              data: new Date().toLocaleDateString('pt-br', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute:'2-digit', second:'2-digit'}),
-              metodo_pagamento: pagamento.name,
-              total
-            }).then(() => {
-              setLoading(false)
-            })
+          </div>
+          <div className='cadastro_produto_valor'>
+            <h3>Valor:
+              <br/> 
+              <input type='number' onChange={({target}) => setValor(target.value)} value={valor}/></h3>
+          </div>
+          <div className='cadastro_produto_quantidade'>
+            <h3>Quantidade:
+              <br/>
+              <input type='number' onChange={({target}) => setQuantidade(target.value)} value={quantidade}/></h3>
+          </div>
+          <div className='cadastro_produto_pagamento'>
+            <h3>Pagamento:
+              <br/> 
+              <select onChange={({target}) => {
+                const pagamento = forma_pagamento.find((pagamen) => pagamen.name.includes(target.value))
+                setPagamento(pagamento)
+              }}
+              >
+                {forma_pagamento.map((pagamento, index) => 
+                <option value={pagamento.name} key={index} >{pagamento.name}</option>
+                  )}
+              </select>
+            </h3>
+          </div>
+          <div className='cadastro_produto_valor_total'>
+          <h3>Valor total:
+            <br/>
+             R${ (valor * quantidade / pagamento.porcentagem).toFixed(2) } </h3>
+          </div>
+          <div className='cadastro_produto_btn'>
+            <button onClick={ async () => {
+              setLoading(true) 
+              setData([])
+              const total = (valor * quantidade / pagamento.porcentagem).toFixed(2)
+              await axios.post(`${process.env.REACT_APP_PRODUCTION_URL_API}/vendas/createvenda`, {
+                produto,
+                valor,
+                quantidade,
+                data: new Date().toLocaleDateString('pt-br', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute:'2-digit', second:'2-digit'}),
+                metodo_pagamento: pagamento.name,
+                total
+              }, 
+              { 
+                headers: {
+                  token
+              }
+             }).then(() => {
+                setLoading(false)
+              })
 
-          }}
-            >
-              Cadastrar venda
-          </button>
+            }}
+              >
+                Cadastrar venda
+            </button>
+          </div>
           </div>
     {loading ? <Loading /> : data.map((dado, index) => {
       if (dado.length === 0) (<h2>Nenhum dado encontrado</h2>)
@@ -101,9 +135,10 @@ async function GetFinanceiro() {
       <h3>Data: {dado.data}</h3>
       <button onClick={
         async () => {
-          setLoading(true) 
+          setLoading(true)
+          setData([])
           const { _id: id } = data.find((_, i) => i === index );
-          await axios.delete(`${process.env.REACT_APP_PRODUCTION_URL_API}/vendas/deletevenda/${id}`)
+          await axios.delete(`${process.env.REACT_APP_PRODUCTION_URL_API}/vendas/deletevenda/${id}`, { headers: { token } })
           .then((data) => console.log(data))
           .catch((err) => console.log(err))
           setLoading(false)

@@ -18,8 +18,9 @@ export default function Login() {
       await axios.post(`${process.env.REACT_APP_PRODUCTION_URL_API}/login`, {
           email, senha
       })
-      .then((data) => {
+      .then(({data: { token } }) => {
         setLoading(false);
+        localStorage.setItem('token', token)
         navigate('gestao-de-pedidos')
       })
       .catch((err) => {

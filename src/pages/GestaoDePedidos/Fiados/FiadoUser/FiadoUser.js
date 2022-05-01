@@ -7,6 +7,7 @@ import axios from 'axios';
 export default function FiadoUser() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const token = localStorage.getItem('token');
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -17,7 +18,7 @@ export default function FiadoUser() {
 
     async function GetDataUser() {
         if (loading){
-        await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/fiados/${id}`)
+        await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/fiados/${id}`, { headers: { token } })
         .then(({ data: { result } }) => {
             setData(result);
             setLoading(false);
@@ -32,13 +33,13 @@ export default function FiadoUser() {
                 <h1>Pedidos feitos</h1>
                 <button 
                     onClick={
-                    () => axios.delete(`${process.env.REACT_APP_PRODUCTION_URL_API}/fiados/deletefiador/${id}`)
+                    () => axios.delete(`${process.env.REACT_APP_PRODUCTION_URL_API}/fiados/deletefiador/${id}`, { headers: { token }})
                         .then(() => navigate('/gestao-de-pedidos/fiados'))}
                 >
                     Apagar Fiador
                 </button>
-                {data.valorTotal.map((product) => (
-                    <div>
+                {data.valorTotal.map((product, i) => (
+                    <div key={i}>
                         <div className='data-product'>
                             <h2>Data:</h2>
                             <h2>{product.data}</h2>
