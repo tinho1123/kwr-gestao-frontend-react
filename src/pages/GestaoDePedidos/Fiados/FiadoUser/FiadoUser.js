@@ -18,7 +18,7 @@ export default function FiadoUser() {
 
     async function GetDataUser() {
         if (loading){
-        await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/fiados/${id}`, { headers: { token } })
+        await axios.get(`${process.env.REACT_APP_DEVELOPMENT_URL_API}/fiados/${id}`, { headers: { token } })
         .then(({ data: { result } }) => {
             setData(result);
             setLoading(false);
@@ -28,27 +28,36 @@ export default function FiadoUser() {
   return (
     <div>
         {loading ? <Loading /> : (
-            <div className='user'>
-                <h2 className='nome'>{data.name}</h2>
+            <div className='fiadouser'>
+                <h2 className='fiadouser_nome'>{data.name}</h2>
                 <h1>Pedidos feitos</h1>
                 <button 
                     onClick={
-                    () => axios.delete(`${process.env.REACT_APP_PRODUCTION_URL_API}/fiados/deletefiador/${id}`, { headers: { token }})
+                    () => axios.delete(`${process.env.REACT_APP_DEVELOPMENT_URL_API}/fiados/deletefiador/${id}`, { headers: { token }})
                         .then(() => navigate('/gestao-de-pedidos/fiados'))}
                 >
                     Apagar Fiador
                 </button>
-                {data.valorTotal.map((product, i) => (
-                    <div key={i}>
-                        <div className='data-product'>
+                
+                {data.valorTotal.map((product, index) => (
+                    <div key={index}>
+                        <div className='fiadouser_data_product'>
                             <h2>Data:</h2>
                             <h2>{product.data}</h2>
                         </div>
-                        <div className='product'>
+                        <div className='fiadouser_product'>
                         <h3>Quantidade: <br />{product.quantidade}</h3>
                         <h3>Produto: <br /> {product.produto}</h3>
                         <h3>Valor: <br /> {product.valor}</h3>
                         <h3>Total: <br /> {product.total}</h3>
+                        <button onClick={ async () => {
+                            setLoading(true)
+                            const { _id: id } = data.valorTotal.find((_, i) => i === index );
+                            await axios.delete(`${process.env.REACT_APP_DEVELOPMENT_URL_API}/fiados/deleteprodutofiador/${data._id}/${id}`, { headers: { token } })
+                                .then(({ data: {result} }) => result.message && navigate('/gestao-de-pedidos/fiados'))
+                                .catch((err) => console.log(err))
+                            setLoading(false)
+                        }}>Apagar Produto</button>
                         </div>
                     </div>
                 ))}
