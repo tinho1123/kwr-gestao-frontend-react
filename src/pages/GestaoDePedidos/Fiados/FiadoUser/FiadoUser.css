@@ -1,21 +1,21 @@
-.user {
+.fiadouser {
     display: flex;
     flex-direction: column;
     text-align: center;
 }
 
-.product {
+.fiadouser_product {
     display: flex;
     background-color: cadetblue;
     justify-content: space-around;
 }
 
-.product h3 {
+.fiadouser_product h3 {
     margin-left: 20px;
     margin-right: 95px;
 }
 
-.data-product {
+.fiadouser_data_product {
     display: flex;
     justify-content: space-between;
     margin-left: 30px;
