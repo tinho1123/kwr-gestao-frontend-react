@@ -18,7 +18,7 @@ export default function FiadoUser() {
 
     async function GetDataUser() {
         if (loading){
-        await axios.get(`${process.env.REACT_APP_DEVELOPMENT_URL_API}/fiados/${id}`, { headers: { token } })
+        await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/fiados/${id}`, { headers: { token } })
         .then(({ data: { result } }) => {
             setData(result);
             setLoading(false);
@@ -33,7 +33,7 @@ export default function FiadoUser() {
                 <h1>Pedidos feitos</h1>
                 <button 
                     onClick={
-                    () => axios.delete(`${process.env.REACT_APP_DEVELOPMENT_URL_API}/fiados/deletefiador/${id}`, { headers: { token }})
+                    () => axios.delete(`${process.env.REACT_APP_PRODUCTION_URL_API}/fiados/deletefiador/${id}`, { headers: { token }})
                         .then(() => navigate('/gestao-de-pedidos/fiados'))}
                 >
                     Apagar Fiador
@@ -53,7 +53,7 @@ export default function FiadoUser() {
                         <button onClick={ async () => {
                             setLoading(true)
                             const { _id: id } = data.valorTotal.find((_, i) => i === index );
-                            await axios.delete(`${process.env.REACT_APP_DEVELOPMENT_URL_API}/fiados/deleteprodutofiador/${data._id}/${id}`, { headers: { token } })
+                            await axios.delete(`${process.env.REACT_APP_PRODUCTION_URL_API}/fiados/deleteprodutofiador/${data._id}/${id}`, { headers: { token } })
                                 .then(({ data: {result} }) => result.message && navigate('/gestao-de-pedidos/fiados'))
                                 .catch((err) => console.log(err))
                             setLoading(false)
