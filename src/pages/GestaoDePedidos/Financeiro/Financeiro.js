@@ -51,6 +51,15 @@ async function GetFinanceiro() {
     {name:'Cartão de Crédito', porcentagem: 0.96  }
   ]
 
+  const filterOptGroup = (filter) => {
+    const data = dataProdutos.filter((produto) => produto.produto.toLowerCase().includes(filter.toLowerCase()))
+    return (
+      data.map((produto, i) => (
+        <option value={produto.produto} key={i}>{produto.produto}</option>
+      ))
+    )
+  }
+
   return (
     <div className='container-financeiro' >
     <div className='financeiro'>
@@ -59,16 +68,10 @@ async function GetFinanceiro() {
         <div className='cadastro_produto_produto'>
         <h3>Produto:
           <br/> 
-          <select onChange={ ({ target }) => {
-            const produto = dataProdutos.find((produto) => produto.produto.includes(target.value))
-            setProduto(produto.produto)
-            setValor(produto.valor)
-          }}
-            >
-            {dataProdutos.map((produto, index) => 
-            <option value={produto.produto} key={index}>{produto.produto}</option>
-              )}
-          </select>
+          <input type='text' list='product'/>
+          <datalist id='product'>
+            {filterOptGroup('')}
+          </datalist>
           </h3>
           </div>
           <div className='cadastro_produto_valor'>
@@ -88,7 +91,7 @@ async function GetFinanceiro() {
                 const pagamento = forma_pagamento.find((pagamen) => pagamen.name.includes(target.value))
                 setPagamento(pagamento)
               }}
-              >
+              required={true}>
                 {forma_pagamento.map((pagamento, index) => 
                 <option value={pagamento.name} key={index} >{pagamento.name}</option>
                   )}

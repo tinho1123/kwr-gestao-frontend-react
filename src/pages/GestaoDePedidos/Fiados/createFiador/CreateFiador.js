@@ -19,6 +19,15 @@ export default function CreateFiador() {
     dataProdutosFetch()
   })
 
+  const filterOptGroup = (filter) => {
+    const data = dataProdutos.filter((produto) => produto.produto.toLowerCase().includes(filter.toLowerCase()));
+    return (
+      data.map((produto, i) => (
+        <option value={produto.produto} key={i}>{produto.produto}</option>
+      ))
+    )
+  }
+
   const dataProdutosFetch = async () => {
     await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/produtos/getall`, { headers: { token }})
     .then(( { data: { result } }) => {
@@ -54,9 +63,22 @@ export default function CreateFiador() {
             setProduto(find.produto)
             setValor(find.valor)
             }}>
-            {dataProdutos.map((produto, index) => 
-            <option value={produto.produto} key={index} >{produto.produto}</option>
-            )}
+            <option></option>
+            <optgroup label='Litrões'>
+                {filterOptGroup('1l')}
+              </optgroup>
+              <optgroup label='600ml'>
+              {filterOptGroup('600 ml')}
+              </optgroup>
+              <optgroup label='Long Neck'>
+              {filterOptGroup('long')}
+              </optgroup>
+              <optgroup label='Latões'>
+              {filterOptGroup('latão')}
+              </optgroup>
+              <optgroup label='Refrigerantes'>
+              {filterOptGroup('refrigerante')}
+              </optgroup> 
           </select>
         </h3>
         <h3>Valor: <input type='number' onChange={({target}) => setValor(target.value)} value={valor}/></h3>
