@@ -58,28 +58,10 @@ export default function CreateFiador() {
       <div>
         <h1>Produtos</h1>
         <h3>produto: 
-          <select onChange={({target}) => {
-            const find = dataProdutos.find((find) => find.produto.includes(target.value))
-            setProduto(find.produto)
-            setValor(find.valor)
-            }}>
-            <option></option>
-            <optgroup label='Litrões'>
-                {filterOptGroup('1l')}
-              </optgroup>
-              <optgroup label='600ml'>
-              {filterOptGroup('600 ml')}
-              </optgroup>
-              <optgroup label='Long Neck'>
-              {filterOptGroup('long')}
-              </optgroup>
-              <optgroup label='Latões'>
-              {filterOptGroup('latão')}
-              </optgroup>
-              <optgroup label='Refrigerantes'>
-              {filterOptGroup('refrigerante')}
-              </optgroup> 
-          </select>
+        <input type='text' list='product' onChange={({ target }) => setProduto(target.value)}/>
+          <datalist id='product'>
+            {filterOptGroup('')}
+          </datalist>
         </h3>
         <h3>Valor: <input type='number' onChange={({target}) => setValor(target.value)} value={valor}/></h3>
         <h3>Quantidade: <input type='number' onChange={({target}) => setQuantidade(target.value)} value={quantidade}/></h3>

@@ -68,7 +68,7 @@ async function GetFinanceiro() {
         <div className='cadastro_produto_produto'>
         <h3>Produto:
           <br/> 
-          <input type='text' list='product'/>
+          <input type='text' list='product' onChange={({ target }) => setProduto(target.value)}/>
           <datalist id='product'>
             {filterOptGroup('')}
           </datalist>
