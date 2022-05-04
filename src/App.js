@@ -7,7 +7,6 @@ import Login from './pages/Login/Login'
 import FiadosUser from './pages/GestaoDePedidos/Fiados/FiadoUser/FiadoUser'
 import CreateFiador from './pages/GestaoDePedidos/Fiados/createFiador/CreateFiador'
 import Navbar from './components/Navbar/Navbar';
-import ContextProvider from './context/ThemeContext'
 
 
 export default function App() {

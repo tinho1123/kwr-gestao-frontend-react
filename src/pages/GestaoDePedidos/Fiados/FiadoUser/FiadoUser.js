@@ -22,7 +22,11 @@ export default function FiadoUser() {
         .then(({ data: { result } }) => {
             setData(result);
             setLoading(false);
-        }).catch((err) => console.log(err))
+        }).catch(async ({response: { data } }) => {
+            if (data.message.toLowerCase().includes('token')) {
+              navigate('/')
+            }
+          })
     }}
 
   return (
