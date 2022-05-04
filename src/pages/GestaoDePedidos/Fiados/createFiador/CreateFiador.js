@@ -1,9 +1,11 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import Context from '../../../../context/Context';
 import './CreateFiador.css';
 
-export default function CreateFiador() {
+export default function CreateFiador(props) {
+  const { changeTheme } = useContext(Context);
   const token = localStorage.getItem('token');
 
   const navigate = useNavigate();
@@ -53,25 +55,27 @@ export default function CreateFiador() {
   }
 
   return (
-    <div>
-      <h3>Nome: <input type='text' onChange={({target}) => setName(target.value)} value={name}/></h3>
-      <div>
-        <h1>Produtos</h1>
-        <h3>produto: 
-        <input type='text' list='product' onChange={({ target }) => setProduto(target.value)}/>
-          <datalist id='product'>
-            {filterOptGroup('')}
-          </datalist>
-        </h3>
-        <h3>Valor: <input type='number' onChange={({target}) => setValor(target.value)} value={valor}/></h3>
-        <h3>Quantidade: <input type='number' onChange={({target}) => setQuantidade(target.value)} value={quantidade}/></h3>
-        <h3>Valor total: R${valor * quantidade}</h3>
-        <button onClick={() => {
-          setLoading(true)
-          createFiador()
-          }}>Cadastrar fiador</button>
-        { loading && <h3>Carregando...</h3>}
-        </div>
+    <div className='create_fiador_container' style={changeTheme}>
+      <div className='create_fiador_form'>
+        <h3>Nome: <br/> <input type='text' onChange={({target}) => setName(target.value)} value={name}/></h3>
+        <div>
+          <h1 style={{ textAlign: 'center'}}>Produtos</h1>
+          <h3>produto: <br/>
+          <input type='text' list='product' onChange={({ target }) => setProduto(target.value)}/>
+            <datalist id='product'>
+              {filterOptGroup('')}
+            </datalist>
+          </h3>
+          <h3>Valor:  <br/> <input type='number' onChange={({target}) => setValor(target.value)} value={valor}/></h3>
+          <h3>Quantidade: <br/> <input type='number' onChange={({target}) => setQuantidade(target.value)} value={quantidade}/></h3>
+          <h3>Valor total: R${valor * quantidade}</h3>
+          <button onClick={() => {
+            setLoading(true)
+            createFiador()
+            }}>Cadastrar fiador</button>
+          { loading && <h3>Carregando...</h3>}
+          </div>
+      </div>
     </div>
   )
 }

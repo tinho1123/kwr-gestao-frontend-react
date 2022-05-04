@@ -7,6 +7,7 @@ import Login from './pages/Login/Login'
 import FiadosUser from './pages/GestaoDePedidos/Fiados/FiadoUser/FiadoUser'
 import CreateFiador from './pages/GestaoDePedidos/Fiados/createFiador/CreateFiador'
 import Navbar from './components/Navbar/Navbar';
+import ContextProvider from './context/ThemeContext'
 
 
 export default function App() {
@@ -17,10 +18,11 @@ export default function App() {
         <Route path='/' element={<Login />} exact/>
 
         <Route path='/gestao-de-pedidos' element={
-        <>
-        <Navbar />
-        <Financeiro />
-        </>} exact 
+          <>
+          <Navbar />
+          <Financeiro />
+          </>
+      } exact 
         />
 
         <Route path='/gestao-de-pedidos/fiados' element={
@@ -45,10 +47,11 @@ export default function App() {
         />
 
         <Route path='/gestao-de-pedidos/configuracoes' element={
-        <>
-        <Navbar />
-        <Configuracoes />
-        </>} exact 
+          <>
+          <Navbar />
+          <Configuracoes />
+          </>
+        } exact 
         />
         
       </Routes>

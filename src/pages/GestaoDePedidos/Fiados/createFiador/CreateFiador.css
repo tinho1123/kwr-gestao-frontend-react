@@ -1,0 +1,13 @@
+.create_fiador_container {
+    position: absolute;
+    width: 100%;
+    height: 92.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.create_fiador_form {
+    display: flex;
+    flex-direction: column;
+}

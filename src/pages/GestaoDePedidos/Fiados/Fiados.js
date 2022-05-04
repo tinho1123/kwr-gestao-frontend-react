@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import './Fiados.css'
 
 import Loading from '../../../components/Loading/Loading';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Context from '../../../context/Context';
 
 export default function Fiados() {
+  const {changeTheme} = useContext(Context)
   const navigate = useNavigate()
   const token = localStorage.getItem('token');
 
@@ -35,8 +37,8 @@ async function GetFinanceiro() {
   }
 
   return (
-    <div className='container-fiados'>
-    <div className='fiados'>
+    <div className='container-fiados' >
+    <div className='fiados' style={{background:changeTheme.background, color: changeTheme.color}}>
         <h2>Fiados</h2>
 
         <div>
