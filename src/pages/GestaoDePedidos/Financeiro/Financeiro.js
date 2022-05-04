@@ -2,11 +2,13 @@ import React, { useState, useEffect, useContext } from 'react'
 import './Financeiro.css';
 import Loading from '../../../components/Loading/Loading';
 import axios from 'axios';
-import Context from '../../../context/Context';
+import Context from '../../../context/themeContext/Context';
+import { useNavigate } from 'react-router-dom';
 
 
 
 export default function Financeiro() {
+  const navigate = useNavigate()
   const {changeTheme} = useContext(Context)
 
   const token = localStorage.getItem('token')
@@ -33,7 +35,11 @@ async function GetFinanceiro() {
   })
     .then(({ data: { result } }) => {
       setData(result)
-    }).catch((err) => console.log(err))
+    }).catch(async ({response: { data }}) => {
+      if (data.message.toLowerCase().includes('token')) {
+        navigate('/')
+      }
+    })
   await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/produtos/getall`, {
     headers: {
       token
@@ -45,7 +51,11 @@ async function GetFinanceiro() {
       setDataProdutos(data)
 
       setLoading(false);
-    }).catch((err) => console.log(err))
+    }).catch(async ({response: { data } }) => {
+      if (data.message.toLowerCase().includes('token')) {
+        navigate('/')
+      }
+    })
   }
 
   const forma_pagamento = [
@@ -72,7 +82,9 @@ async function GetFinanceiro() {
         <div className='financeiro_cadastro_produto_produto'>
         <h3>Produto:
           <br/> 
-          <input 
+          {window.screen.width > 600 ? (
+            <>
+            <input 
             type='text'
             list='product'
             onChange={({ target }) => setProduto(target.value)}
@@ -81,6 +93,24 @@ async function GetFinanceiro() {
           <datalist id='product'>
             {filterOptGroup('')}
           </datalist>
+          </>
+          ) : (
+            <>
+            <select>
+              <optgroup label='Litrões'>{filterOptGroup('1l')}</optgroup>
+              <optgroup label='600ml'>{filterOptGroup('600')}</optgroup>
+              <optgroup label='Latões'>{filterOptGroup('latão')}</optgroup>
+              <optgroup label='300ml'>{filterOptGroup('300')}</optgroup>
+              <optgroup label='Long Neck'>{filterOptGroup('long')}</optgroup>
+              <optgroup label='Energético'>{filterOptGroup('energético')}</optgroup>
+              <optgroup label='Refrigerante'>{filterOptGroup('refrigerante')}</optgroup>
+              <optgroup label='Lata'>{filterOptGroup('lata')}</optgroup>
+              <optgroup label='Gelo'>{filterOptGroup('gelo')}</optgroup>
+              <optgroup label='água'>{filterOptGroup('água')}</optgroup>
+            </select>
+            </>
+          )}
+            
           </h3>
           </div>
           <div className='financeiro_cadastro_produto_valor'>

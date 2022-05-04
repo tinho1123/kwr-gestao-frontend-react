@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import './Loading.css';
-import Context from '../../context/Context';
+import Context from '../../context/themeContext/Context';
 
 export default function Loading() {
   const {changeTheme} = useContext(Context)

@@ -4,7 +4,7 @@ import './Fiados.css'
 import Loading from '../../../components/Loading/Loading';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Context from '../../../context/Context';
+import Context from '../../../context/themeContext/Context';
 
 export default function Fiados() {
   const {changeTheme} = useContext(Context)
@@ -33,7 +33,11 @@ async function GetFinanceiro() {
       setData(result)
       setFilter(result)
       setLoading(false)
-    }).catch((err) => setError(err))
+    }).catch(async ({response: { data } }) => {
+      if (data.message.toLowerCase().includes('token')) {
+        navigate('/')
+      }
+    })
   }
 
   return (

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import Context from '../../../context/Context'
+import Context from '../../../context/themeContext/Context'
 import './configuracoes.css'
 
 export default function Configuracoes() {

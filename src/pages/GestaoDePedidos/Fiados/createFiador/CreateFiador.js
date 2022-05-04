@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import Context from '../../../../context/Context';
+import Context from '../../../../context/themeContext/Context';
 import './CreateFiador.css';
 
 export default function CreateFiador(props) {
@@ -36,7 +36,11 @@ export default function CreateFiador(props) {
       const data = result
       data.unshift({ produto: '', valor: 0 });
       setDataProdutos(data)
-    }).catch((err) => console.log(err));
+    }).catch(async ({response: { data } }) => {
+      if (data.message.toLowerCase().includes('token')) {
+        navigate('/')
+      }
+    })
   }
 
   const createFiador = async () => {
