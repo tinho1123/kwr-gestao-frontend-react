@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import './Financeiro.css';
 import Loading from '../../../components/Loading/Loading';
 import axios from 'axios';
+import Context from '../../../context/Context';
+
 
 
 export default function Financeiro() {
+  const {changeTheme} = useContext(Context)
+
   const token = localStorage.getItem('token')
 
   const [data, setData] = useState([]);
@@ -51,56 +55,64 @@ async function GetFinanceiro() {
     {name:'Cartão de Crédito', porcentagem: 0.96  }
   ]
 
+  const filterOptGroup = (filter) => {
+    const data = dataProdutos.filter((produto) => produto.produto.toLowerCase().includes(filter.toLowerCase()))
+    return (
+      data.map((produto, i) => (
+        <option value={produto.produto} key={i} >{produto.produto}</option>
+      ))
+    )
+  }
+
   return (
-    <div className='container-financeiro' >
+    <div className='container-financeiro' style={{background: changeTheme.background}}>
     <div className='financeiro'>
       <h2>Financeiro</h2>
-      <div className='cadastro-produto'>
-        <div className='cadastro_produto_produto'>
+      <div className='financeiro_cadastro_produto' style={{ color: changeTheme.color}}>
+        <div className='financeiro_cadastro_produto_produto'>
         <h3>Produto:
           <br/> 
-          <select onChange={ ({ target }) => {
-            const produto = dataProdutos.find((produto) => produto.produto.includes(target.value))
-            setProduto(produto.produto)
-            setValor(produto.valor)
-          }}
-            >
-            {dataProdutos.map((produto, index) => 
-            <option value={produto.produto} key={index}>{produto.produto}</option>
-              )}
-          </select>
+          <input 
+            type='text'
+            list='product'
+            onChange={({ target }) => setProduto(target.value)}
+            onSelect={({target}) => setTimeout(() => {setValor(dataProdutos.find((elemen) => elemen.produto === target.value).valor)}, 1000)}
+            />
+          <datalist id='product'>
+            {filterOptGroup('')}
+          </datalist>
           </h3>
           </div>
-          <div className='cadastro_produto_valor'>
+          <div className='financeiro_cadastro_produto_valor'>
             <h3>Valor:
               <br/> 
               <input type='number' onChange={({target}) => setValor(target.value)} value={valor}/></h3>
           </div>
-          <div className='cadastro_produto_quantidade'>
+          <div className='financeiro_cadastro_produto_quantidade'>
             <h3>Quantidade:
               <br/>
               <input type='number' onChange={({target}) => setQuantidade(target.value)} value={quantidade}/></h3>
           </div>
-          <div className='cadastro_produto_pagamento'>
+          <div className='financeiro_cadastro_produto_pagamento'>
             <h3>Pagamento:
               <br/> 
               <select onChange={({target}) => {
                 const pagamento = forma_pagamento.find((pagamen) => pagamen.name.includes(target.value))
                 setPagamento(pagamento)
               }}
-              >
+              required={true}>
                 {forma_pagamento.map((pagamento, index) => 
                 <option value={pagamento.name} key={index} >{pagamento.name}</option>
                   )}
               </select>
-            </h3>
+            </h3> 
           </div>
-          <div className='cadastro_produto_valor_total'>
+          <div className='financeiro_cadastro_produto_valor_total'>
           <h3>Valor total:
             <br/>
              R${ (valor * quantidade / pagamento.porcentagem).toFixed(2) } </h3>
           </div>
-          <div className='cadastro_produto_btn'>
+          <div className='financeiro_cadastro_produto_btn'>
             <button onClick={ async () => {
               setLoading(true) 
               setData([])
@@ -127,10 +139,10 @@ async function GetFinanceiro() {
             </button>
           </div>
           </div>
-    {loading ? <Loading /> : data.map((dado, index) => {
+    {loading ? <Loading/> : data.map((dado, index) => {
       if (dado.length === 0) (<h2>Nenhum dado encontrado</h2>)
       return (
-      <div key={dado._id} className="container-data" >
+      <div key={dado._id} className="financeiro_container_data" >
       <h3>Produto: {dado.produto}</h3>
       <h3>Quantidade: {dado.quantidade}</h3>
       <h3>Total: R${dado.valor}</h3>

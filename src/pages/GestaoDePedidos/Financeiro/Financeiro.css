@@ -1,5 +1,4 @@
 .financeiro {
-        background-color: #fff;
         width: 100vw;
         height: 100vh;
         text-align: center;
@@ -10,7 +9,7 @@
     display: flex
 }
 
-.container-data {
+.financeiro_container_data{
     background-color: white;
     display: flex;
     flex-wrap: wrap;
@@ -19,28 +18,28 @@
     border: 1px solid black;
 }
 
-.cadastro-produto {
+.financeiro_cadastro_produto {
     display: flex;
     justify-content: space-around;
 }
 
-.cadastro_produto_btn {
+.financeiro_cadastro_produto_btn {
     width: 100px;
     height: 100px;
 }
 
-.cadastro_produto_btn button {
+.financeiro_cadastro_produto_btn button {
     height: 50px;
     margin-top: 20px;
 
 }
 
 @media screen and (max-width: 600px){
-    .cadastro-produto {
+    .financeiro_cadastro_produto {
         flex-direction: column;
 
     }
-    .cadastro_produto_btn {
+    .financeiro_cadastro_produto_btn {
         align-self: center;
     }
 }

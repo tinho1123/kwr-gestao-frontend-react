@@ -1,9 +1,11 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import Context from '../../../../context/Context';
 import './CreateFiador.css';
 
-export default function CreateFiador() {
+export default function CreateFiador(props) {
+  const { changeTheme } = useContext(Context);
   const token = localStorage.getItem('token');
 
   const navigate = useNavigate();
@@ -18,6 +20,15 @@ export default function CreateFiador() {
   useEffect(()=> {
     dataProdutosFetch()
   })
+
+  const filterOptGroup = (filter) => {
+    const data = dataProdutos.filter((produto) => produto.produto.toLowerCase().includes(filter.toLowerCase()));
+    return (
+      data.map((produto, i) => (
+        <option value={produto.produto} key={i}>{produto.produto}</option>
+      ))
+    )
+  }
 
   const dataProdutosFetch = async () => {
     await axios.get(`${process.env.REACT_APP_PRODUCTION_URL_API}/produtos/getall`, { headers: { token }})
@@ -44,30 +55,32 @@ export default function CreateFiador() {
   }
 
   return (
-    <div>
-      <h3>Nome: <input type='text' onChange={({target}) => setName(target.value)} value={name}/></h3>
-      <div>
-        <h1>Produtos</h1>
-        <h3>produto: 
-          <select onChange={({target}) => {
-            const find = dataProdutos.find((find) => find.produto.includes(target.value))
-            setProduto(find.produto)
-            setValor(find.valor)
-            }}>
-            {dataProdutos.map((produto, index) => 
-            <option value={produto.produto} key={index} >{produto.produto}</option>
-            )}
-          </select>
-        </h3>
-        <h3>Valor: <input type='number' onChange={({target}) => setValor(target.value)} value={valor}/></h3>
-        <h3>Quantidade: <input type='number' onChange={({target}) => setQuantidade(target.value)} value={quantidade}/></h3>
-        <h3>Valor total: R${valor * quantidade}</h3>
-        <button onClick={() => {
-          setLoading(true)
-          createFiador()
-          }}>Cadastrar fiador</button>
-        { loading && <h3>Carregando...</h3>}
-        </div>
+    <div className='create_fiador_container' style={changeTheme}>
+      <div className='create_fiador_form'>
+        <h3>Nome: <br/> <input type='text' onChange={({target}) => setName(target.value)} value={name}/></h3>
+        <div>
+          <h1 style={{ textAlign: 'center'}}>Produtos</h1>
+          <h3>produto: <br/>
+          <input 
+            type='text'
+            list='product'
+            onChange={({ target }) => setProduto(target.value)}
+            onSelect={({target}) => setTimeout(() => {setValor(dataProdutos.find((elemen) => elemen.produto === target.value).valor)}, 1000)}
+            />
+            <datalist id='product'>
+              {filterOptGroup('')}
+            </datalist>
+          </h3>
+          <h3>Valor:  <br/> <input type='number' onChange={({target}) => setValor(target.value)} value={valor}/></h3>
+          <h3>Quantidade: <br/> <input type='number' onChange={({target}) => setQuantidade(target.value)} value={quantidade}/></h3>
+          <h3>Valor total: R${valor * quantidade}</h3>
+          <button onClick={() => {
+            setLoading(true)
+            createFiador()
+            }}>Cadastrar fiador</button>
+          { loading && <h3>Carregando...</h3>}
+          </div>
+      </div>
     </div>
   )
 }
