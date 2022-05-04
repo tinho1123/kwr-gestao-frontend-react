@@ -61,7 +61,12 @@ export default function CreateFiador(props) {
         <div>
           <h1 style={{ textAlign: 'center'}}>Produtos</h1>
           <h3>produto: <br/>
-          <input type='text' list='product' onChange={({ target }) => setProduto(target.value)}/>
+          <input 
+            type='text'
+            list='product'
+            onChange={({ target }) => setProduto(target.value)}
+            onSelect={({target}) => setTimeout(() => {setValor(dataProdutos.find((elemen) => elemen.produto === target.value).valor)}, 1000)}
+            />
             <datalist id='product'>
               {filterOptGroup('')}
             </datalist>
